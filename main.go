@@ -4,11 +4,11 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"os"
+	"path"
 	"time"
-    "path"
-    "io/ioutil"
 
 	"github.com/pin/tftp"
 )
@@ -50,7 +50,7 @@ func readHandler(filename string, rf io.ReaderFrom) error {
 		defer resp.Body.Close()
 
 		if resp.StatusCode != 200 {
-            io.Copy(ioutil.Discard, resp.Body)
+			io.Copy(ioutil.Discard, resp.Body)
 			return fmt.Errorf("Received status code: %d", resp.StatusCode)
 		}
 
