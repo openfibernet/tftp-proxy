@@ -1,13 +1,14 @@
 package main
 
 import (
-	"errors"
 	"flag"
 	"fmt"
 	"io"
 	"net/http"
 	"os"
 	"time"
+    "path"
+    "io/ioutil"
 
 	"github.com/pin/tftp"
 )
@@ -18,8 +19,8 @@ var dir string
 // readHandler is called when client starts file download from server
 func readHandler(filename string, rf io.ReaderFrom) error {
 
-	if _, err := os.Stat(filename); err == nil {
-		file, err := os.Open(filename)
+	if _, err := os.Stat(path.Join(dir, filename)); err == nil {
+		file, err := os.Open(path.Join(dir, filename))
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "%v\n", err)
 			return err
@@ -49,7 +50,8 @@ func readHandler(filename string, rf io.ReaderFrom) error {
 		defer resp.Body.Close()
 
 		if resp.StatusCode != 200 {
-			return errors.New(fmt.Sprintf("Received status code: %d", resp.StatusCode))
+            io.Copy(ioutil.Discard, resp.Body)
+			return fmt.Errorf("Received status code: %d", resp.StatusCode)
 		}
 
 		rf.(tftp.OutgoingTransfer).SetSize(resp.ContentLength)
@@ -69,9 +71,6 @@ func main() {
 	flag.StringVar(&dir, "dir", "/var/lib/tftpboot", "The directory to serve files from. For example /var/lib/tftpboot")
 	flag.StringVar(&url, "url", "http://example.com", "The URL to proxy requests to. For example http://example.com")
 	flag.Parse()
-
-	// Change dir to the default tftp directory
-	os.Chdir(dir)
 
 	// use nil in place of handler to disable read or write operations
 	s := tftp.NewServer(readHandler, nil)
