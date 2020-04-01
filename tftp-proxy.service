@@ -1,0 +1,8 @@
+[Unit]
+Description=tftp-proxy
+
+[Service]
+ExecStart=/usr/bin/tftp-proxy -url=http://zerotouch.example.com
+
+[Install]
+WantedBy=multi-user.target
