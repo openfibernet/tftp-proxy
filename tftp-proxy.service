@@ -2,7 +2,10 @@
 Description=tftp-proxy
 
 [Service]
-ExecStart=/usr/bin/tftp-proxy -url=http://zerotouch.example.com
+Environment="TFTP_PROXY_UPSTREAM_URL=http://127.0.0.1/tftpboot"
+EnvironmentFile=-/etc/sysconfig/tftp-proxy
+EnvironmentFile=-/etc/default/tftp-proxy
+ExecStart=/usr/bin/tftp-proxy -url=${TFTP_PROXY_UPSTREAM_URL} $TFTP_PROXY_OPTIONS
 
 [Install]
 WantedBy=multi-user.target
