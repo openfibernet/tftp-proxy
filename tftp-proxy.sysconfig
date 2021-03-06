@@ -1,0 +1,17 @@
+## Path:	Productivity/Networking/Ftp/Servers
+## Description: TFTP Proxy configuration
+ 
+## Type:	string
+## Default:	"http://127.0.0.1/tftpboot"
+#
+# URL stem of the upstream HTTP server - the TFTP file request will be
+# suffix to this.
+#
+TFTP_PROXY_UPSTREAM_URL="http://127.0.0.1/tftpboot"
+
+## Type:	string
+## Default:	""
+#
+# extra comand line options to be handed to the TFTP PRoxy program
+#
+TFTP_PROXY_OPTIONS=""
