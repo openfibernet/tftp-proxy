@@ -18,7 +18,7 @@ var dir string
 
 // readHandler is called when client starts file download from server
 func readHandler(filename string, rf io.ReaderFrom) error {
-	file_path := filepath.Clean(path.Join(dir, filename))
+	file_path := path.Join(dir, filepath.Clean(filename))
 
 	if _, err := os.Stat(file_path); err == nil {
 		file, err := os.Open(file_path)
