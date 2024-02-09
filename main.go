@@ -42,7 +42,7 @@ func readHandler(filename string, rf io.ReaderFrom) error {
 
 		fmt.Printf("%s %d bytes sent\n", filename, n)
 	} else { // File not found locally. Proxying the request.
-		fileUrl := url + "/" + filename
+		fileUrl := url + filepath.Clean(path.Join("/", filename))
 		resp, err := http.Get(fileUrl)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "%v\n", err)
